@@ -121,10 +121,9 @@ $(document).ready(function(){
     
     
     //Allows to use return to start a new search
-    var search = document.getElementById('SearchField');
-    if(search){
+    if(document.getElementById('SearchField')){
     document.getElementById('SearchField').addEventListener("keydown", function(e) {
-        if (e.keyCode == 13 || e.which == 13) { document.getElementById("search-btn").click }
+        if (e.keyCode == 13 || e.which == 13) { document.getElementById("search-btn").click() }
     }, false);
     }
     document.getElementById('SearchField').focus();
