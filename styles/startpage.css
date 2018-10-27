@@ -5,25 +5,30 @@ html, body {
 }
 
 #clock{
+    top: 15%;
     font-family: NovaMono, Verdana;
     font-size: 80px;
-    color: lightgray;
-    margin-bottom: 30px;
-    line-height: 85px;
+    color: gray;
+    line-height: 85px;*/
+    display: block;
+    margin-top: -.06em;
+    text-align: center;
+    letter-spacing: .05em;
 }
-
-.Search{
+#Search{
+    position: relative;
     margin: 0 auto;
-  height: 50px;
-  width: 50%;
-  top: 30%;
+    height: 50px;
+    width: 50%;
+    top: 20%;
+    display: flex;
 }
-
-#SearchButton {
-  background-color: orange;
-}
-
 #SearchField {
-  width: 80%;
+    width: 80%;
 
 }
+#bottom-search{
+    position: absolute;
+    display: inline-block;
+     align-self: flex-end;
+ }

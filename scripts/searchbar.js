@@ -12,16 +12,17 @@ months=["January","February","March","April","May","June","July","August","Septe
 function startTime() {
     var today = new Date();
     var h = today.getHours();
+    (h < 20 && h > 8) ? $("body").css("background-color", "white") : $("body").css("background-color", "black");
     var m = today.getMinutes();
     var s = today.getSeconds();
     var month = today.getMonth();
     var weekDay = today.getDay();
     var day = today.getDate();
     if(m==0 && s==0)
-        //writeDate();
+        writeDate();
     m = checkTime(m);
-    //s = checkTime(s);
-    document.getElementById('clock').innerHTML = h + ":" + m;
+    s = checkTime(s);
+    document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
     var t = setTimeout(startTime, 500);
 }
 //Return a properly formatted day number, like 1st, 3rd ...
@@ -40,20 +41,20 @@ function dayToString(day){
     }
 }
 //Update the date every time you load/reload the page or after midnight
-/* function writeDate() {
+function writeDate() {
     MonthsArray=["January","February","March","April","May","June","July","August","September","October","November","December"];
     WeekdaysArray=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     var today = new Date();
     var month = today.getMonth();
     month < 12 ? monthString = MonthsArray[month] : monthString = "Error in month conversion, number=" + month ;
     var weekDay = today.getDay();
+    var WeekdayString;
     weekDay < 7 ? WeekdayString = WeekdaysArray[weekDay] : WeekdayString = "Error: weekDay number "+ today.getDay();
     var day = today.getDate();
     var year = today.getFullYear();
-    document.getElementById('weekday').innerHTML = WeekdayString;
-    document.getElementById('date').innerHTML = monthString + " " + dayToString(day) + ", "+year;
+    document.getElementById("date").innerHTML = WeekdayString + ", " + dayToString(day) + " of " + monthString + ", " + year;
     var t = setTimeout(startTime, 500);
-} */
+} 
 // add zero in front of numbers < 10
 function checkTime(i) {
     if (i < 10) {i = "0" + i};  
@@ -103,28 +104,22 @@ function newSearch(){
     window.open(engines[currEngine].url+document.getElementById('SearchField').value,"_newtab");
     document.getElementById('SearchField').value=''; 
 }
-function buttonEngine(){
-    
-
-}
 //Function executed after the loading of the page
 $(document).ready(function(){
 
     startTime();
-//    writeDate();
+    document.getElementById("date") ? writeDate() : document.getElementById("SearchField").placeholder='Error getting "date"';
     generateEngines();
     var defEngine=getDefaultEngine();
     if(defEngine == "")
         changeEngine(0);
     else
         changeEngine(defEngine);
-    
-    
     //Allows to use return to start a new search
     if(document.getElementById('SearchField')){
     document.getElementById('SearchField').addEventListener("keydown", function(e) {
         if (e.keyCode == 13 || e.which == 13) { document.getElementById("search-btn").click() }
     }, false);
+     document.getElementById('SearchField').focus();
     }
-    document.getElementById('SearchField').focus();
 });
