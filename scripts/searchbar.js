@@ -75,6 +75,19 @@ function generateEngines(){
         $("#engine-list").html($("#engine-list").html()+'<a class="dropdown-item" href="#" onclick="changeEngine('+i+')">'+engines[i].name+'</a>');
     }
 }
+
+links1=[
+    { name:"reddit", url:"reddit.com"},
+    { name:"google", url:"google.com"},
+    { name:"4chan", url:"4chan.org"},
+    { name:"ArchWiki", url:"archwiki.org"}
+      ];
+
+function generateLinks(){
+    for(var i = 0; i < links1.length; i++){
+     $("#TableOne").html($("#TableOne").html()+'<tr><td><a class="links" href=\"' + links1[i].url + '\">' + links1[i].name+'</a></td></tr>');
+ }
+}
 //Save an engine choice as a cookie
 function setDefaultEngine(cvalue, exdays) {
     var d = new Date();
@@ -110,6 +123,7 @@ $(document).ready(function(){
     startTime();
     document.getElementById("date") ? writeDate() : document.getElementById("SearchField").placeholder='Error getting "date"';
     generateEngines();
+    generateLinks();
     var defEngine=getDefaultEngine();
     if(defEngine == "")
         changeEngine(0);
