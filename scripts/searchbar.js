@@ -2,8 +2,8 @@ currEngine = 0;
 //Engine list -- Use a link that includes the beginning of his query request at the end
 engines=[
     {name:"Google", url:"https://www.google.pt/search?q="},
-    {name:"DuckDuckGo", url:"https://duckduckgo.com/?q="},
-    {name:"Wikipedia", url:"https://en.wikipedia.org/w/index.php?search="},
+    {name:"Duckduckgo", url:"https://duckduckgo.com/?q="},
+    {name:"Wiki", url:"https://en.wikipedia.org/w/index.php?search="},
     {name:"GitHub", url:"https://github.com/search?utf8=✓&q="},
     {name:"ArchWiki", url:"https://wiki.archlinux.org/index.php?search="}
 ];
@@ -12,7 +12,7 @@ months=["January","February","March","April","May","June","July","August","Septe
 function startTime() {
     var today = new Date();
     var h = today.getHours();
-    (h < 20 && h > 8) ? $("body").css("background-color", "white") : $("body").css("background-color", "black");
+    //(h < 20 && h > 8) ? $("body").css("background-color", "white") : $("body").css("background-color", "black");
     var m = today.getMinutes();
     var s = today.getSeconds();
     var month = today.getMonth();
@@ -57,7 +57,7 @@ function writeDate() {
 } 
 // add zero in front of numbers < 10
 function checkTime(i) {
-    if (i < 10) {i = "0" + i};  
+    if (i < 10) {i = "0" + i};
     return i;
 }
 //Update the current engine
@@ -75,15 +75,8 @@ function generateEngines(){
         $("#engine-list").html($("#engine-list").html()+'<a class="dropdown-item" href="#" onclick="changeEngine('+i+')">'+engines[i].name+'</a>');
     }
 }
-
-links1=[
-    { name:"reddit", url:"reddit.com"},
-    { name:"google", url:"google.com"},
-    { name:"4chan", url:"4chan.org"},
-    { name:"ArchWiki", url:"archwiki.org"}
-      ];
-
 function generateLinks(){
+    $("#TableOne").empty();
     for(var i = 0; i < links1.length; i++){
      $("#TableOne").html($("#TableOne").html()+'<tr><td><a class="links" href=\"' + links1[i].url + '\">' + links1[i].name+'</a></td></tr>');
  }
@@ -114,16 +107,36 @@ function getDefaultEngine() {
 
 //Open a new tab with the generated link
 function newSearch(){
-    window.open(engines[currEngine].url+document.getElementById('SearchField').value,"_newtab");
+    var text=document.getElementById('SearchField').value;
+    if(text.substring(0,1) == "!"){
+        switch(text.substring(1,2)){
+        case("1"):
+            var ntext = text.replace(/![0-9]/gi, "");
+            links1.push({name: `${ntext}`, url:"https://www.google.com"});
+            generateLinks();
+            break;
+        case('2'):
+
+            break;
+        }
+    }
+    else{
+        window.open(engines[currEngine].url+text,"_newtab");
+    }
     document.getElementById('SearchField').value=''; 
 }
+var links1;
+
+links1 =[
+    { name:"reddit", url:"reddit.com"},
+    { name:"google", url:"google.com"},
+];
+
 //Function executed after the loading of the page
 $(document).ready(function(){
-
     startTime();
     document.getElementById("date") ? writeDate() : document.getElementById("SearchField").placeholder='Error getting "date"';
     generateEngines();
-    generateLinks();
     var defEngine=getDefaultEngine();
     if(defEngine == "")
         changeEngine(0);
@@ -132,7 +145,20 @@ $(document).ready(function(){
     //Allows to use return to start a new search
     if(document.getElementById('SearchField')){
     document.getElementById('SearchField').addEventListener("keydown", function(e) {
-        if (e.keyCode == 13 || e.which == 13) { document.getElementById("search-btn").click() }
+        switch(e.keyCode){
+        case 13: //Enter
+            document.getElementById("search-btn").click();
+            break;
+        case 18: //Alt
+            if(currEngine == engines.length-1){
+                currEngine = 0;
+            }
+            else if(currEngine < engines.length-1){
+                currEngine++;
+            }
+            changeEngine(currEngine);
+            break;
+        }
     }, false);
      document.getElementById('SearchField').focus();
     }
