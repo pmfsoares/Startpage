@@ -8,14 +8,17 @@
         <script src="scripts/libs/jquery-3.3.1.min.js"></script>
         <script src="scripts/libs/popper.min.js"></script>
         <script src="scripts/libs/bootstrap.min.js"></script>
-				<script type="text/javascript" src="scripts/searchbar.js"></script>
+        <script src="scripts/searchbar.js"></script>
+        <script src="scripts/libs/js.cookie.js"></script>
     </head>
     <body>
-        <div class="text-center" id="clock"></div>
-        <div class="text-center" id="date"></div>
+        <div class="text-center" id="clock-date">
+            <div class="text-center" id="clock"></div>
+            <div class="text-center" id="date"></div>
+        </div>
         <div class="centered input-group" id="Search">
             <input type="text" class="form-control" id="SearchField" placeholder="Search...">
-            <div class="input-group-append">
+            <div class="input-group-append" id="btn-main">
               <button type="button" class="btn btn-outline-secondary"
                 onclick="newSearch()" id="search-btn"></button>
               <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
@@ -28,7 +31,6 @@
         <div class="text-center" id="links">
             <div class="links-column" id="columnOne">
                 <table id="TableOne">
-                    
                 </table>
             </div>
             <div class="links-column" id="columnTwo">2
