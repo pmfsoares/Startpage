@@ -9,4 +9,4 @@ New-tab-page/Start-page for all browsers(Microsoft browsers not tested)
   - <kbd>Enter</kbd> While on the search bar opens new tab with the search bar contents on the desired search engine
 
 ---
-![StartPage Demo](placeholder.png)
+![StartPage Demo](screenshot.png)
