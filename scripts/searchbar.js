@@ -1,13 +1,28 @@
 currEngine = 0;
 //Engine list -- Use a link that includes the beginning of his query request at the end
 engines=[
-    {name:"Google", url:"https://www.google.pt/search?q="},
-    {name:"Duckduckgo", url:"https://duckduckgo.com/?q="},
-    {name:"Wiki", url:"https://en.wikipedia.org/w/index.php?search="},
-    {name:"GitHub", url:"https://github.com/search?utf8=✓&q="},
-    {name:"ArchWiki", url:"https://wiki.archlinux.org/index.php?search="}
+    {name:"Google", url:"https://www.google.pt/search?q=", ico:"styles/icons/google.png"},
+    {name:"Duckduckgo", url:"https://duckduckgo.com/?q=", ico:"styles/icons/duckduckgo.png"},
+    {name:"Wiki", url:"https://en.wikipedia.org/w/index.php?search=", ico:"styles/icons/wikipedia.png"},
+    {name:"GitHub", url:"https://github.com/search?utf8=✓&q=", ico:"styles/icons/github.png"},
+    {name:"ArchWiki", url:"https://wiki.archlinux.org/index.php?search=", ico:"styles/icons/Arch-linux.png"}
 ];
-months=["January","February","March","April","May","June","July","August","September","October","November", "December"]
+months=["January","February","March","April","May","June","July","August","September","October","November", "December"];
+
+var links1, links2, links3;
+links1 =[
+    { name:"reddit", url:"https://www.reddit.com"},
+    { name:"google", url:"https://www.google.com"},
+];
+links2 =[
+    {name: "g", url:"https://www.4chan.org/g/catalog"},
+    {name: "wg", url:"https://www.4chan.org/wg/catalog"},
+    {name: "w", url:"https://www.4chan.org/w/catalog"}
+];
+links3 =[
+    { name:"reddit", url:"https://www.reddit.com"},
+    { name:"google", url:"https://www.google.com"},
+];
 //Update clock every 1/2 sec.
 function startTime() {
     var today = new Date();
@@ -67,7 +82,8 @@ function changeEngine(n){
     }
     currEngine=n;
     setDefaultEngine(n, 30);
-    document.getElementById('search-btn').innerHTML=engines[currEngine].name;
+    $("#search-btn").empty();
+    $("#search-btn").html($("#search-btn").html()+'<img src="'+engines[currEngine].ico+'"/>');
 }
 //Generate the dropdown list from the engines array
 function generateEngines(){
@@ -76,10 +92,24 @@ function generateEngines(){
     }
 }
 function generateLinks(){
-    $("#TableOne").empty();
-    for(var i = 0; i < links1.length; i++){
-     $("#TableOne").html($("#TableOne").html()+'<tr><td><a class="links" href=\"' + links1[i].url + '\">' + links1[i].name+'</a></td></tr>');
- }
+    for(var j = 1; j <= 3; j++){
+        var temp;
+        switch(j){
+        case 1:
+            temp = links1;
+            break;
+        case 2:
+            temp = links2;
+            break;
+        case 3:
+            temp = links3;
+            break;
+        }
+        $(`#Table${j}`).empty();
+        for(var i = 0; i < temp.length; i++){
+            $(`#Table${j}`).html($(`#Table${j}`).html()+'<tr><td><a class="links" href=\"' + temp[i].url + '\">' + temp[i].name+'</a></td></tr>');
+        }
+    }
 }
 //Save an engine choice as a cookie
 function setDefaultEngine(cvalue, exdays) {
@@ -125,18 +155,28 @@ function newSearch(){
     }
     document.getElementById('SearchField').value=''; 
 }
-var links1;
 
-links1 =[
-    { name:"reddit", url:"reddit.com"},
-    { name:"google", url:"google.com"},
-];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Function executed after the loading of the page
 $(document).ready(function(){
     startTime();
     document.getElementById("date") ? writeDate() : document.getElementById("SearchField").placeholder='Error getting "date"';
     generateEngines();
+    generateLinks();
     var defEngine=getDefaultEngine();
     if(defEngine == "")
         changeEngine(0);
@@ -149,17 +189,25 @@ $(document).ready(function(){
         case 13: //Enter
             document.getElementById("search-btn").click();
             break;
-        case 18: //Alt
-            if(currEngine == engines.length-1){
-                currEngine = 0;
-            }
-            else if(currEngine < engines.length-1){
-                currEngine++;
-            }
-            changeEngine(currEngine);
-            break;
         }
     }, false);
      document.getElementById('SearchField').focus();
     }
+    document.body.addEventListener("keydown", function(e){
+        switch(e.keyCode){
+        case 18: //alt
+            RaiseEngine();
+            break;
+        }
+
+    }, false);
 });
+function RaiseEngine(){
+    if(currEngine == engines.length-1){
+        currEngine = 0;
+    }
+    else if(currEngine < engines.length-1){
+        currEngine++;
+    }
+    changeEngine(currEngine);
+}
