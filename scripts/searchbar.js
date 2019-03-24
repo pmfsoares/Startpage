@@ -1,15 +1,19 @@
 currEngine = 0;
 //Engine list -- Use a link that includes the beginning of his query request at the end
 engines=[
-    {name:"Google", url:"https://www.google.pt/search?q=", ico:"styles/icons/google.png"},
-    {name:"Duckduckgo", url:"https://duckduckgo.com/?q=", ico:"styles/icons/duckduckgo.png"},
-    {name:"Wiki", url:"https://en.wikipedia.org/w/index.php?search=", ico:"styles/icons/wikipedia.png"},
-    {name:"GitHub", url:"https://github.com/search?utf8=✓&q=", ico:"styles/icons/github.png"},
-    {name:"ArchWiki", url:"https://wiki.archlinux.org/index.php?search=", ico:"styles/icons/Arch-linux.png"}
+    {name:"Google", url:"https://www.google.pt/search?q=", icon:"styles/icons/google.png"},
+    {name:"Duckduckgo", url:"https://duckduckgo.com/?q=", icon:"styles/icons/duckduckgo.png"},
+    {name:"Wiki", url:"https://en.wikipedia.org/w/index.php?search=", icon:"styles/icons/wikipedia.png"},
+    {name:"GitHub", url:"https://github.com/search?utf8=✓&q=", icon:"styles/icons/github.png"},
+    {name:"ArchWiki", url:"https://wiki.archlinux.org/index.php?search=", icon:"styles/icons/Arch-linux.png"},
+    {name:"Reddit", url:"https://www.reddit.com/search?q=", url2:"&include_over_18=on&sort=relevance&t=all",icon:"styles/icons/reddit.png"}
+
+
 ];
 months=["January","February","March","April","May","June","July","August","September","October","November", "December"];
 
 var links1, links2, links3;
+var ClockBin = true;
 links1 =[
     { name:"reddit", url:"https://www.reddit.com"},
     { name:"google", url:"https://www.google.com"},
@@ -25,20 +29,23 @@ links3 =[
 ];
 //Update clock every 1/2 sec.
 function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    //(h < 20 && h > 8) ? $("body").css("background-color", "white") : $("body").css("background-color", "black");
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    var month = today.getMonth();
-    var weekDay = today.getDay();
-    var day = today.getDate();
-    if(m==0 && s==0)
+    if(!ClockBin){
+        $("#clock-date").append(`<div class="text-center" id="clock"></div><div class"text-center" id="date"></div>`);
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        var month = today.getMonth();
+        var weekDay = today.getDay();
+        var day = today.getDate();
+        if(m==0 && s==0)
+            writeDate();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
         writeDate();
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
-    var t = setTimeout(startTime, 500);
+    }
+    var t = setTimeout(startTime, 1000);
 }
 //Return a properly formatted day number, like 1st, 3rd ...
 function dayToString(day){
@@ -72,7 +79,7 @@ function writeDate() {
 } 
 // add zero in front of numbers < 10
 function checkTime(i) {
-    if (i < 10) {i = "0" + i};
+    if (i < 10) {i = "0" + i;};
     return i;
 }
 //Update the current engine
@@ -83,7 +90,7 @@ function changeEngine(n){
     currEngine=n;
     setDefaultEngine(n, 30);
     $("#search-btn").empty();
-    $("#search-btn").html($("#search-btn").html()+'<img src="'+engines[currEngine].ico+'"/>');
+    $("#search-btn").html($("#search-btn").html()+'<img src="'+engines[currEngine].icon+'"/>');
 }
 //Generate the dropdown list from the engines array
 function generateEngines(){
@@ -105,9 +112,9 @@ function generateLinks(){
             temp = links3;
             break;
         }
-        $(`#Table${j}`).empty();
+        $(`#column${j}`).empty();
         for(var i = 0; i < temp.length; i++){
-            $(`#Table${j}`).html($(`#Table${j}`).html()+'<tr><td><a class="links" href=\"' + temp[i].url + '\">' + temp[i].name+'</a></td></tr>');
+            $(`#column${j}`).html($(`#column${j}`).html()+'<p><a class="links" href=\"' + temp[i].url + '\">' + temp[i].name+'</a></p>');
         }
     }
 }
@@ -139,6 +146,18 @@ function getDefaultEngine() {
 function newSearch(){
     var text=document.getElementById('SearchField').value;
     if(text.substring(0,1) == "!"){
+        if(text.substring(1,6) == "clock"){
+            $("#clock-date").empty();
+            if(ClockBin){
+                ClockBin = false;
+                startTime();
+            }else if(!ClockBin){
+                ClockBin = true;
+                BinClockDivs();
+            }
+            document.getElementById('SearchField').value='';
+            return;
+        }
         switch(text.substring(1,2)){
         case("1"):
             var ntext = text.replace(/![0-9]/gi, "");
@@ -151,30 +170,74 @@ function newSearch(){
         }
     }
     else{
-        window.open(engines[currEngine].url+text,"_newtab");
+        if(engines[currEngine].name === "Reddit"){
+            window.open(engines[currEngine].url+text+engines[currEngine].url2, "_newtab");
+        }
+        else{
+            window.open(engines[currEngine].url+text,"_newtab");
+        }
     }
     document.getElementById('SearchField').value=''; 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function BinClockDivs(){
+    var div = "";
+    $("#clock-date").append(`<div class="d-inline-flex centered bin-clock"></div>`);
+    for(var x=1; x <= 6; x++){
+        div += `<div class="digit digit-${x}">`;
+        for(var z=4; z >= 1; z--){
+            div += `<div class="shadow led bin-clock-${x}-${z}"></div>`;
+        }
+        div += `</div>`;
+    }
+    $(".bin-clock").append(div);
+    displayTime();
+}
+function displayDigit(digit, col){
+    for(var l = 1; l <= 4; l++){
+        if(digit & 1 == 1){
+            TurnOn(col, l);
+        }
+        else{
+            TurnOff(col, l);
+        }
+        digit = digit >> 1;
+    }
+}
+function displayNumber(number, position){
+    var str = number.toString();
+    displayDigit(parseInt(str[str.length-1]), position+1);
+    if(str.length > 1){
+        displayDigit(parseInt(str[str.length-2]), position);
+    }
+}
+function displayTime(){
+    if(ClockBin){
+        var date = new Date();
+        displayNumber(date.getSeconds(), 5);
+        displayNumber(date.getMinutes(), 3);
+        displayNumber(date.getHours(), 1);
+    }
+    setTimeout(function() {
+        displayTime();
+    }, 1000);
+}
+function TurnOn(col, row){
+    var led = $(".bin-clock").find(`.bin-clock-${col}-${row}`);
+    led.addClass("LedLit");
+}
+function TurnOff(col, row){
+    var led = $(".bin-clock").find(`.bin-clock-${col}-${row}`);
+    led.removeClass("LedLit");
+}
 
 //Function executed after the loading of the page
 $(document).ready(function(){
-    startTime();
-    document.getElementById("date") ? writeDate() : document.getElementById("SearchField").placeholder='Error getting "date"';
+    if(ClockBin){
+        BinClockDivs();
+    }
+    else if(!ClockBin){
+        startTime();
+    }
     generateEngines();
     generateLinks();
     var defEngine=getDefaultEngine();
