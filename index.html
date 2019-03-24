@@ -3,19 +3,19 @@
     <head>
         <title>Home Page</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="styles/bootstrap.min.css">
-				<link rel="stylesheet" type="text/css" href="styles/startpage.css">
+        <link rel="stylesheet" href="styles/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="styles/startpage.css">
         <script src="scripts/libs/jquery-3.3.1.min.js"></script>
-        <script src="scripts/libs/popper.min.js"></script>
-        <script src="scripts/libs/bootstrap.min.js"></script>
+        <script src="scripts/libs/bootstrap.bundle.js"></script>
         <script src="scripts/searchbar.js"></script>
-        <script src="scripts/libs/js.cookie.js"></script>
+        <!-- <script src="scripts/libs/js.cookie.js"></script> -->
     </head>
     <body>
-        <div class="text-center" id="clock-date">
-            <div class="text-center" id="clock"></div>
-            <div class="text-center" id="date"></div>
+        <div class="text-center" id="clock-date"> 
+
+            </div>
         </div>
+
         <div class="centered input-group" id="Search">
             <input type="text" class="form-control" id="SearchField" placeholder="Search...">
             <div class="input-group-append" id="btn-main">
@@ -28,20 +28,12 @@
              </div>
             </div>
         </div>
-        <div class="text-center" id="links">
-            <div class="links-column" id="columnOne">
-                <table id="Table1">
-                </table>
+        <div class="row" id="links">
+            <div class="links-column col" id="column1">
             </div>
-            <div class="links-column" id="columnTwo">
-                <table id="Table2">
-
-                </table>
+            <div class="links-column col" id="column2">
             </div>
-            <div class="links-column" id="columnThree">
-                <table id="Table3">
-
-                </table>
+            <div class="links-column col" id="column3">
             </div>
         </div>
     </body>
