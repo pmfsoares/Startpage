@@ -1,8 +1,17 @@
 
 html, body {
-  background-color: #141d26;
+  background-color: #0d1b2a;
   width: 100%;
   height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar{
+    width: 0px;
+    background: transparent;
+}
+::-webkit-scrollbar-thumb{
+    background: #FF0000;
 }
 #clock-date {
     position: relative;
@@ -12,12 +21,13 @@ html, body {
 #clock{
     font-family: NovaMono, Verdana;
     font-size: 80px;
-    color: gray;
+    color: #2161c6!important;
     line-height: 85px;*/
     display: block;
     margin-top: -.06em;
     text-align: center;
     letter-spacing: .05em;
+    box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.3)!important;
 }
 .SearchSpan{
 
@@ -39,6 +49,11 @@ html, body {
 #btn-main {
     width: 20%;
 }
+#search-btn-dropdown , #search-btn{
+    background: #FFFFFF;
+}
+
+
 #links{
     display: flex;
     position: relative;
@@ -58,35 +73,34 @@ html, body {
     margin: 0 auto;
 }
 .digit {
-    background: #141d26;
     display: table-cell;
     vertical-align: bottom;
     float: left;
 }
 
 .LedLit {
-    background: #ff0000!important;
+    background: #2161c6!important;
+    box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.3)!important;
+
 }
 
 .digit-1 , .digit-3 , .digit-5{
-/*    border-style: solid none none solid;*/
     float: left;
 
 }
 .digit-2 , .digit-4 , .digit-6{
-/*    border-style: none none solid none;*/
     float: left;
     margin-left: 1em;
-    margin-right: 1em;
-}
-.digit-6{
-/*    border-style: none solid solid none;*/
+    margin-right: 2em;
 }
 .led {
-    background: lightgrey;
+    background: rgba(211, 211, 211, 0.4);
     width: 3em;
     height: 3em;
-    margin: 0 2px 2px 0;
+    margin: 4px 2px 2px 0px;
     border-radius: 1em;
 }
-
+#sidebar-calendar{
+    height: 100%;
+    overflow: scroll;
+}

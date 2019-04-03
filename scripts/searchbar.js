@@ -12,7 +12,7 @@ engines=[
 ];
 months=["January","February","March","April","May","June","July","August","September","October","November", "December"];
 
-var links1, links2, links3;
+var links1, links2, links3, BinTimeout, DigTimeout;
 var ClockBin = true;
 links1 =[
     { name:"reddit", url:"https://www.reddit.com"},
@@ -45,7 +45,7 @@ function startTime() {
         document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
         writeDate();
     }
-    var t = setTimeout(startTime, 1000);
+    DigTimeout = setTimeout(function(){startTime();}, 1000);
 }
 //Return a properly formatted day number, like 1st, 3rd ...
 function dayToString(day){
@@ -75,7 +75,6 @@ function writeDate() {
     var day = today.getDate();
     var year = today.getFullYear();
     document.getElementById("date").innerHTML = WeekdayString + ", " + dayToString(day) + " of " + monthString + ", " + year;
-    var t = setTimeout(startTime, 500);
 } 
 // add zero in front of numbers < 10
 function checkTime(i) {
@@ -147,6 +146,7 @@ function newSearch(){
     var text=document.getElementById('SearchField').value;
     if(text.substring(0,1) == "!"){
         if(text.substring(1,6) == "clock"){
+            //TODO Add cookies to remember the last clock
             $("#clock-date").empty();
             if(ClockBin){
                 ClockBin = false;
@@ -185,12 +185,11 @@ function BinClockDivs(){
     for(var x=1; x <= 6; x++){
         div += `<div class="digit digit-${x}">`;
         for(var z=4; z >= 1; z--){
-            div += `<div class="shadow led bin-clock-${x}-${z}"></div>`;
+            div += `<div class="led bin-clock-${x}-${z}"></div>`;
         }
         div += `</div>`;
     }
     $(".bin-clock").append(div);
-    displayTime();
 }
 function displayDigit(digit, col){
     for(var l = 1; l <= 4; l++){
@@ -217,9 +216,7 @@ function displayTime(){
         displayNumber(date.getMinutes(), 3);
         displayNumber(date.getHours(), 1);
     }
-    setTimeout(function() {
-        displayTime();
-    }, 1000);
+    BinTimeout = setTimeout(function(){displayTime();}, 500);
 }
 function TurnOn(col, row){
     var led = $(".bin-clock").find(`.bin-clock-${col}-${row}`);
@@ -229,11 +226,11 @@ function TurnOff(col, row){
     var led = $(".bin-clock").find(`.bin-clock-${col}-${row}`);
     led.removeClass("LedLit");
 }
-
 //Function executed after the loading of the page
 $(document).ready(function(){
     if(ClockBin){
         BinClockDivs();
+        displayTime();
     }
     else if(!ClockBin){
         startTime();
