@@ -204,6 +204,11 @@ function displayDigit(digit, col){
 }
 function displayNumber(number, position){
     var str = number.toString();
+    if(number == 0){
+        for(var l=1; l<=4; l++){
+            TurnOff(position, l);
+        }
+    }
     displayDigit(parseInt(str[str.length-1]), position+1);
     if(str.length > 1){
         displayDigit(parseInt(str[str.length-2]), position);
