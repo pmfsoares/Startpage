@@ -1,0 +1,6 @@
+{
+    "clientId":"CLIENT_ID",
+    "apiKey":"API_KEY",
+    "scopes":"https://www.googleapis.com/auth/calendar.events.readonly",
+    "email":"YOUR_EMAIL@GMAIL.COM"
+}
